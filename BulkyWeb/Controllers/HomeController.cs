@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using Bulky.Models.Models;
 
-namespace BulkyWeb.Controllers
+namespace Bulky.Web.Controllers
 {
     public class HomeController : Controller
     {
