@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="Areas\Admin\Views\Product\Index.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Admin\Views\Category\Create.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Admin\Views\Category\Delete.cshtml" />
   </ItemGroup>
@@ -33,7 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <UpToDateCheckInput Remove="Areas\Admin\Views\Product\Index.cshtml" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,69 @@
+﻿@model Product
+
+
+<form method="post" class="bg-secondary">
+    <div class="border p-5 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">Edit product</h2>
+            <hr/>
+        </div>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="mb-3 row">
+            <span class="p-0 mt-1" asp-validation-for="Title"></span>
+            <input asp-for="Title" class="form-control"/>
+            <label asp-for="Title" class="p-0"></label>
+        </div>
+        <div class="mb-3 row">
+            <span class="p-0 mt-1" asp-validation-for="ISBN"></span>
+            <input asp-for="ISBN" class="form-control"/>
+            <label asp-for="ISBN" class="p-0"></label>
+        </div>
+        <div class="mb-3 row">
+            <span class="p-0 mt-1" asp-validation-for="Author"></span>
+            <input asp-for="Author" class="form-control"/>
+            <label asp-for="Author" class="p-0"></label>
+        </div>
+        <div class="mb-3 row">
+            <span class="p-0 mt-1" asp-validation-for="ListPrice"></span>
+            <input asp-for="ListPrice" class="form-control"/>
+            <label asp-for="ListPrice" class="p-0"></label>
+        </div>
+        <div class="mb-3 row">
+            <span class="p-0 mt-1" asp-validation-for="Price"></span>
+            <input asp-for="Price" class="form-control"/>
+            <label asp-for="Price" class="p-0"></label>
+        </div>
+        <div class="mb-3 row">
+            <span class="p-0 mt-1" asp-validation-for="Price50"></span>
+            <input asp-for="Price50" class="form-control"/>
+            <label asp-for="Price50" class="p-0"></label>
+        </div>
+        <div class="mb-3 row">
+            <span class="p-0 mt-1" asp-validation-for="Price100"></span>
+            <input asp-for="Price100" class="form-control"/>
+            <label asp-for="Price100" class="p-0"></label>
+        </div>
+        <div class="mb-3 row">
+            <span class="p-0 mt-1" asp-validation-for="Description"></span>
+            <textarea asp-for="Description" class="form-control"></textarea>
+            <label asp-for="Description" class="p-0"></label>
+        </div>
+        <div class="row">
+            <div class="col-6 col-lg-3">
+                <button type="submit" class="btn btn-primary form-control">
+                    Edit
+                </button>
+            </div>
+            <div class="col-6 col-lg-3">
+                <a asp-controller="Product" asp-action="Index" class="btn btn-outline-secondary form-control">
+                    Back to List
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts
+{
+    <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml"/>
+}
