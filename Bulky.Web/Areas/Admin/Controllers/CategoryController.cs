@@ -2,8 +2,9 @@
 using Bulky.Models.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Bulky.Web.Controllers
+namespace Bulky.Web.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -14,7 +15,7 @@ namespace Bulky.Web.Controllers
         }
         public IActionResult Index()
         {
-            return View( _unitOfWork.Category.GetAll().ToList());
+            return View(_unitOfWork.Category.GetAll().ToList());
         }
 
         public IActionResult Create()
@@ -25,7 +26,7 @@ namespace Bulky.Web.Controllers
         [HttpPost]
         public IActionResult Create(Category category)
         {
-            if (category.Name == category.DisplayOrder.ToString()) 
+            if (category.Name == category.DisplayOrder.ToString())
             {
                 ModelState.AddModelError("name", "The Display Order cannot be the same as the Name");
             }
@@ -47,7 +48,7 @@ namespace Bulky.Web.Controllers
             }
 
             var categoryToEdit = _unitOfWork.Category.Get(c => c.Id == id);
-            
+
             if (categoryToEdit == null)
             {
                 return NotFound();
@@ -88,12 +89,12 @@ namespace Bulky.Web.Controllers
         public IActionResult DeletePost(int? id)
         {
             var category = _unitOfWork.Category.Get(c => c.Id == id);
-            if (category == null) 
+            if (category == null)
                 return NotFound();
-            
+
             _unitOfWork.Category.Remove(category);
             _unitOfWork.Save();
-            TempData["success"] = "Category deleted successfully"; 
+            TempData["success"] = "Category deleted successfully";
 
             return RedirectToAction("Index", "Category");
         }
