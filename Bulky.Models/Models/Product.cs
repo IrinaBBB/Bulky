@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace Bulky.Models.Models
 {
@@ -39,5 +38,13 @@ namespace Bulky.Models.Models
         [Display(Name = "Price for 100+")]
         [Range(1, 1000)]
         public double Price100 { get; set; }
+
+        [Display(Name = "Category")]
+        public int CategoryId { get; set; }
+
+        [ValidateNever]
+        public Category Category { get; set; }
+
+        public string ImageUrl { get; set; }
     }
 }

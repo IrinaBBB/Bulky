@@ -37,4 +37,8 @@
     <UpToDateCheckInput Remove="Areas\Admin\Views\Product\Index.cshtml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\product\" />
+  </ItemGroup>
+
 </Project>
