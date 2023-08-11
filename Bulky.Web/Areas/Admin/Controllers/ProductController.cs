@@ -20,7 +20,7 @@ public class ProductController : Controller
 
     public IActionResult Index()
     {
-        return View(_unitOfWork.Product.GetAll());
+        return View(_unitOfWork.Product.GetAll("Category"));
     }
 
     public IActionResult Upsert(int? id)
@@ -37,7 +37,7 @@ public class ProductController : Controller
 
         if (id is not null)
         {
-            viewModel.Product = _unitOfWork.Product.Get(u => u.Id == id);
+            viewModel.Product = _unitOfWork.Product.Get(u => u.Id == id, "Category");
         }
 
         return View(viewModel);
@@ -63,13 +63,31 @@ public class ProductController : Controller
             var fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
             var productPath = Path.Combine(rootPath, @"images/product");
 
+            if (!string.IsNullOrEmpty(viewModel.Product.ImageUrl))
+            {
+                var oldImagePath =
+                    Path.Combine(rootPath, viewModel.Product.ImageUrl.TrimStart('\\'));
+                if (System.IO.File.Exists(oldImagePath))
+                {
+                    System.IO.File.Delete(oldImagePath);
+                }
+            }
+
             using var fileStream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create);
             file.CopyTo(fileStream);
 
-            viewModel.Product.ImageUrl = @"\images\product\" + fileName; 
+            viewModel.Product.ImageUrl = @"\images\product\" + fileName;
         }
 
-        _unitOfWork.Product.Add(viewModel.Product);
+        if (viewModel.Product.Id == 0)
+        {
+            _unitOfWork.Product.Add(viewModel.Product);
+        }
+        else
+        {
+            _unitOfWork.Product.Update(viewModel.Product);
+        }
+
         _unitOfWork.Save();
 
         TempData["success"] = "Product created successfully";
@@ -77,33 +95,66 @@ public class ProductController : Controller
         return RedirectToAction("Index", "Product");
     }
 
-    public IActionResult Delete(int? id)
+    //public IActionResult Delete(int? id)
+    //{
+    //    if (id is null or 0)
+    //        return NotFound();
+
+    //    var product = _unitOfWork.Product.Get(c => c.Id == id);
+
+    //    if (product == null)
+    //    {
+    //        return NotFound();
+    //    }
+
+    //    return View(product);
+    //}
+
+
+    //[HttpPost, ActionName("Delete")]
+    //public IActionResult DeletePost(int? id)
+    //{
+    //    var product = _unitOfWork.Product.Get(c => c.Id == id);
+    //    if (product == null)
+    //        return NotFound();
+
+    //    _unitOfWork.Product.Remove(product);
+    //    _unitOfWork.Save();
+    //    TempData["success"] = "Product deleted successfully";
+
+    //    return RedirectToAction("Index", "Product");
+    //}
+
+    #region API CALLS
+
+    [HttpGet]
+    public IActionResult GetAll()
     {
-        if (id is null or 0)
-            return NotFound();
-
-        var product = _unitOfWork.Product.Get(c => c.Id == id);
-
-        if (product == null)
-        {
-            return NotFound();
-        }
-
-        return View(product);
+        var productList = _unitOfWork.Product.GetAll("Category");
+        return Json(new { data = productList });
     }
 
-
-    [HttpPost, ActionName("Delete")]
-    public IActionResult DeletePost(int? id)
+    [HttpDelete]
+    public IActionResult Delete(int id)
     {
-        var product = _unitOfWork.Product.Get(c => c.Id == id);
+        var product = _unitOfWork.Product.Get(p => p.Id == id);
         if (product == null)
-            return NotFound();
+        {
+            return Json(new { success = false, message = "Error while deleting" });
+        }
+
+        var imagePath = Path.Combine(_webEnvironment.WebRootPath, product.ImageUrl.TrimStart('\\'));
+
+        if (System.IO.File.Exists(imagePath))
+        {
+            System.IO.File.Delete(imagePath);
+        }
 
         _unitOfWork.Product.Remove(product);
         _unitOfWork.Save();
-        TempData["success"] = "Product deleted successfully";
 
-        return RedirectToAction("Index", "Product");
+        return Json(new { success = true, message = "Delete Successful"});
     }
+
+    #endregion
 }

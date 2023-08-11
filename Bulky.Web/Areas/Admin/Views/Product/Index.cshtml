@@ -15,37 +15,23 @@
         </div>
     </div>
 </div>
-<table class="table table-bordered table-striped">
+<table id="tableData" class="table table-bordered table-striped" style="width: 100%;">
     <thead>
     <tr>
         <th>Title</th>
         <th>ISBN</th>
         <th>Author</th>
-        <th>List Price</th>
         <th>Price</th>
+        <th>Category</th>
         <th>&nbsp;</th>
     </tr>
     </thead>
-    <tbody>
-    @foreach (var product in Model.OrderBy(u => u.Id))
-    {
-        <tr>
-            <td>@product.Title</td>
-            <td>@product.ISBN</td>
-            <td>@product.Author</td>
-            <td>$@product.ListPrice</td>
-            <td>$@product.Price</td>
-            <td>
-                <div class="btn-group" role="group">
-                    <a asp-controller="Product" asp-action="Upsert" asp-route-id="@product.Id" class="btn btn-primary mx-2">
-                        <i class="bi bi-pencil-square"></i> Edit
-                    </a>
-                    <a asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id" class="btn btn-danger mx-2">
-                        <i class="bi bi-trash-fill"></i> Delete
-                    </a>
-                </div>
-            </td>
-        </tr>
-    }
-    </tbody>
 </table>
+
+@section Scripts {
+    <script src="~/js/product.js"></script>
+}
+
+
+
+

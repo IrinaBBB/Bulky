@@ -13979,3 +13979,15 @@ iframe {
 
 
 
+#tableData_wrapper {
+    background: #efefef;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+#tableData_length {
+    padding: 15px 0;
+}
+
+
+
